@@ -49,14 +49,15 @@ After the installation process you can test if __Tcllib__ is installed by trying
 
 ```bash
 tclsh
-package require uuid
-puts ::uuid::uuid generate
+% package require uuid
+% uuid::uuid generate
 ```
 
 The output should look like this:
 
 ```bash
-
+1.0.7
+c004b0d6-f983-4169-8748-31013dfd24b2
 ```
 
 After you are done with these steps you can go forward by cloning this repository and try to use the __Ozeki.Libs.Rest library__.
