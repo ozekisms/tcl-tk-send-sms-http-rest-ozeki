@@ -584,19 +584,42 @@ oo::class create MessageApi {
     method send { messages } {
         set authorizationHeader [ my createAuthorizationHeader [ $_configuration getUsername ] [ $_configuration getPassword ] ]
         set requestBody [ my createRequestBody $messages ]
-        return [ my getResponseSend [ my doRequestPost [ my createUriToSendSms [ $_configuration getApiUrl ] ] $authorizationHeader $requestBody ] ] 
+        set results [ my getResponseSend [ my doRequestPost [ my createUriToSendSms [ $_configuration getApiUrl ] ] $authorizationHeader $requestBody ] ] 
+        if {[ $results getTotalCount ] == 1 } {
+            return [ lindex [ $results getResults ] 0 ]
+        } else {
+            return $results
+        }
     }
     
     method delete { folder  messages } {
         set authorizationHeader [ my createAuthorizationHeader [ $_configuration getUsername ] [ $_configuration getPassword ] ]
         set requestBody [ my createRequestBodyToManipulate $folder $messages ]
-        return [ my getResponseManipulate [ my doRequestPost [ my createUriToDeleteSms [ $_configuration getApiUrl ] ] $authorizationHeader $requestBody ] "delete" $messages ]
+        set result [ my getResponseManipulate [ my doRequestPost [ my createUriToDeleteSms [ $_configuration getApiUrl ] ] $authorizationHeader $requestBody ] "delete" $messages ]
+        if { [ $result getTotalCount ] == 1 } {
+            if { [ $result getSuccessCount ] == 1 } {
+                return true
+            } else {
+                return false
+            }
+        } else {
+            return $result
+        }
     }
     
     method mark { folder  messages } {
         set authorizationHeader [ my createAuthorizationHeader [ $_configuration getUsername ] [ $_configuration getPassword ] ]
         set requestBody [ my createRequestBodyToManipulate $folder $messages ]
-        return [ my getResponseManipulate [ my doRequestPost [ my createUriToMarkSms [ $_configuration getApiUrl ] ] $authorizationHeader $requestBody ] "mark" $messages ]
+        set result [ my getResponseManipulate [ my doRequestPost [ my createUriToMarkSms [ $_configuration getApiUrl ] ] $authorizationHeader $requestBody ] "mark" $messages ]
+        if { [ $result getTotalCount ] == 1 } {
+            if { [ $result getSuccessCount ] == 1 } {
+                return true
+            } else {
+                return false
+            }
+        } else {
+            return $result
+        }
     }
     
     method downloadIncoming { } {

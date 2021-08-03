@@ -7,10 +7,10 @@ $configuration setPassword "qwe123"
 $configuration setApiUrl "http://127.0.0.1:9509/api"
 
 set msg [ Message new ]
-$msg setID "e96f3598-b4d2-4a07-95a3-0a49313f6244"
+$msg setID "fef636bc-b17f-4bb6-911a-087e3dc677fc"
 
 set api [ MessageApi new $configuration ]
 
-set result [ $api delete [ Folder NotSent ] $msg ]
+set result [ $api delete [ Folder Inbox ] $msg ]
 
-puts [ $result toString ]
+puts $result
