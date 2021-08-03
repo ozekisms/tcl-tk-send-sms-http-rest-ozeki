@@ -22,9 +22,97 @@ Tutorial: [Tcl/Tk send sms sample and tutorial](https://ozeki-sms-gateway.com/p_
 6. Compile the Send SMS console project
 7. Check the logs in Ozeki SMS Gateway
 
-## How to use the code
+### How to install Tcllib on Linux
 
+To install the __Tcllib__ which contains many useful Tcl components, firstly we have to install __fossil__ on our system.
 
+```bash
+sudo apt-install fossil
+```
+
+After you have installed fossil you can clone the __Tcllib__ library with the following code:
+
+```bash
+fossil clone http://core.tcl.tk/tcllib tclib.fossil
+```
+
+After the cloning proccess we can continue with extracting and installing __Tllib__.
+
+```bash
+mkdir tcllib
+cd tcllib
+fossil open ../tcllib.fossil
+sudo tclsh installer.tcl
+```
+
+After the installation process you can test if __Tcllib__ is installed by trying to require one of its components. In this example code we will try to require and use the __uuid__ package of the __Tcllib__
+
+```bash
+tclsh
+package require uuid
+puts ::uuid::uuid generate
+```
+
+The output should look like this:
+
+```bash
+
+```
+
+After you are done with these steps you can go forward by cloning this repository and try to use the __Ozeki.Libs.Rest library__.
+
+### How to use the Ozeki.Libs.Rest library
+
+In order to use the __Ozeki.Libs.Rest library__ in your own project, you need to place the __Ozeki.Libs.Rest.tcl__ file in your project.
+After you've placed the the file there _(what you can download from this github repository, together with 5 example projects)_, you can import it with this line:
+
+```tcl
+source Ozeki.Libs.Rest.tcl
+```
+When you imported the header file, you are ready to use the __Ozeki.Libs.Rest library__, to send, mark, delete and receive SMS messages.
+
+#### Creating a Configuration
+
+To send your SMS message to the built in API of the __Ozeki SMS Gateway__, your client application needs to know the details of your __Gateway__ and the __http_user__.
+We can define a __Configuration__ instance with these lines of codes in Tcl/Tk.
+
+```tcl
+set configuration [ Configuration new ]
+$configuration setUsername "http_user"
+$configuration setPassword "qwe123"
+$configuration setApiUrl "http://127.0.0.1:9509/api"
+```
+
+#### Creating a Message
+
+After you have initialized your configuration object you can continue by creating a Message object.
+A message object holds all the needed data for message what you would like to send.
+In Tcl/Tk we create a __Message__ instance with the following lines of codes:
+
+```tcl
+set msg [ Message new ]
+$msg setToAddress "+36201111111"
+$msg setText "Hello world!"
+```
+
+#### Creating a MessageApi
+
+You can use the __MessageApi__ class of the __Ozeki.Libs.Rest library__ to create a __MessageApi__ object which has the methods to send, delete, mark and receive SMS messages from the Ozeki SMS Gateway.
+To create a __MessageApi__, you will need these lines of codes and a __Configuration__ instance.
+
+```tcl
+set api [ MessageApi new $configuration ]
+```
+
+After everything is ready you can begin with sending the previously created __Message__ object:
+
+```tcl
+set result [ $api send $msg ]
+
+puts [ $result toString ]
+```
+
+After you have done all the steps, you check the Ozeki SMS Gateway and you will see the message in the _Sent_ folder of the __http_user__.
 
 ## Manual / API reference
 
