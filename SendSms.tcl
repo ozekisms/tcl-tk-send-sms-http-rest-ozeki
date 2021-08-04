@@ -1,5 +1,6 @@
 source Ozeki.Libs.Rest.tcl
 
+;#This is what happens when the repository gets updated.
 
 set configuration [ Configuration new ]
 $configuration setUsername "http_user" 
